@@ -121,41 +121,61 @@ class SinglyLinkedList {
 	}
 
 	remove(idx) {
+		// if list is empty or index is out of bounds, return undefined
 		if (!this.head || idx < 0 || idx >= this.length) return undefined;
+		// if index is 0, cut off the head, set the head to be the next head and decrement the list length
 		if (idx === 0) {
 			let head = this.head;
 			this.head = head.next;
 			this.length--;
+			// if the length is 0, cut off the tail
 			if (this.length === 0) {
 				this.tail = null;
 			}
+			// return the decapitated head
 			return head;
 		}
+		// if the index isn't 0, get the previous node
 		let prev = this.get(idx - 1);
+		// declare a variable for the previous node's next node
 		let node = prev.next;
+		// set the previous node's next node to be the current node's next node
 		prev.next = node.next;
+		// decrement the length
 		this.length--;
+		// return the isolated node
 		return node;
 	}
 
 	rotate(n) {
-		if (this.length === 0 || n <= 0) return;
-
+		// if the length is 0, return with no alterations to the list
+		if (this.length === 0) return;
+		// Ensure that n falls within the valid range of indices for the linked list
 		n = n % this.length;
+		if (n < 0) {
+			n = this.length + n;
+		}
 		if (n === 0) return;
-
+		// declare a variable for the head
 		let current = this.head;
+		// set the count to 1
 		let count = 1;
+		// traverse the list until the node just before the new head of the rotated list is reached
 		while (count < this.length - n && current !== null) {
+			// set the current to the next node
 			current = current.next;
+			// increment count
 			count++;
 		}
-
+		// set the new head to the new head of the rotated list
 		let newHead = current.next;
+		// set the next node of current to null to break the list at the current node
 		current.next = null;
+		// set the tail to link the old tail to the new head circularly
 		this.tail.next = this.head;
+		// update the head
 		this.head = newHead;
-
+		// update the tail
 		let temp = newHead;
 		while (temp.next !== null) {
 			temp = temp.next;
