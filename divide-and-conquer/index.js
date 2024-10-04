@@ -1,10 +1,24 @@
+/* Divide and Conquer Approach*/
+function search(arr, val) {
+	let left = 0;
+	let right = arr.length - 1;
+
+	while (left <= right) {
+		let mid = Math.floor((left + right) / 2);
+
+		if (arr[mid] < val) {
+			left = mid + 1;
+		} else if (arr[mid] > val) {
+			right = mid - 1;
+		} else {
+			return mid;
+		}
+	}
+	return null;
+}
+
 /*
-Given an array of 1s and 0s which has all 1s first followed by all 0s, write a function called countZeroes, which returns the number of zeroes in the array.
-countZeroes([1,1,1,1,0,0]) // 2
-countZeroes([1,0,0,0,0]) // 4
-countZeroes([0,0,0]) // 3
-countZeroes([1,1,1,1]) // 0
-Time Complexity - O(log n) 
+Given an array of 1s and 0s which has all 1s first followed by all 0s, write a function called countZeroes, which returns the number of zeroes in the array. Expected runtime of O(log n)
 */
 
 function countZeroes(arr) {
@@ -30,4 +44,77 @@ function countZeroes(arr) {
 	return 0;
 }
 
-module.exports = { countZeroes };
+// Given a sorted array and a number, write a function called sortedFrequency that counts the occurrences of the number in the array
+
+function sortedFrequency(arr, n) {
+	// If array is empty, return 0 occurrences
+	if (!arr.length) return 0;
+
+	// initializing left, right, count
+	let left = 0;
+	let right = arr.length - 1;
+	let count = 0;
+
+	while (left <= right) {
+		// resets the middle element every time the loop runs, controlling where the middle element is by the left and right pointers
+		let mid = Math.floor((left + right) / 2);
+		// if the middle element matches, increment the count,
+		if (arr[mid] === n) {
+			count++;
+			// Check left and increment count so long as the numbers match
+			for (let i = mid - 1; i >= 0 && arr[i] === n; i--) {
+				count++;
+			}
+			// Check right and increment so long as the numbers match
+			for (let i = mid + 1; i < arr.length && arr[i] === n; i++) {
+				count++;
+			}
+			// break out of the loop
+			break;
+			// if the middle is too small, set the right pointer to be one less than the mid
+		} else if (arr[mid] > n) {
+			right = mid - 1;
+		} else {
+			left = mid + 1;
+		}
+	}
+	// return the number of occurrences
+	return count;
+}
+
+function findRotatedIndex(arr, n) {
+	let left = 0;
+	let right = arr.length - 1;
+
+	while (left <= right) {
+		let mid = Math.floor((right + left) / 2);
+		// return the target if found
+		if (arr[mid] === n) {
+			return mid;
+		}
+		// determine which side is sorted
+		// Left side is sorted because the first index is less than the midpoint
+		if (arr[left] <= arr[mid]) {
+			// Target is located on the sorted left side because the number is between the left and midpoint
+			if (n >= arr[left] && n < arr[mid]) {
+				right = mid - 1;
+				// Otherwise search the right side
+			} else {
+				left = mid + 1;
+			}
+			// Right side is sorted because the first index is greater than the midpoint
+		} else {
+			// Determine if target is on the sorted right side
+			if (n <= arr[right]) {
+				left = mid + 1;
+				// Otherwise search the left side
+			} else {
+				right = mid - 1;
+			}
+		}
+	}
+	// exited loop without finding the target
+	return -1;
+}
+
+module.exports = { countZeroes, sortedFrequency, findRotatedIndex };
