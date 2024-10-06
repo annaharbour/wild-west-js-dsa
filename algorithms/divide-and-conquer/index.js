@@ -18,6 +18,68 @@ function search(arr, val) {
 }
 
 /*
+MERGE SORT
+
+Implement the merge sort algorithm. Given an array, this algorithm will sort the values in the array. The functions take 2 parameters: an array and an optional comparator function.
+
+The comparator function is a callback that will take two values from the array to be compared. The function returns a negative value if the first value is less than the second, a positive value if the first value is greater than the second, and 0 if both values are equal.
+
+The default comparator you provide should assume that the two parameters are numbers and that we are sorting the values from smallest to largest.
+*/
+
+// Implement a merge function that takes in two sorted arrays and a comparator and returns a new sorted array.
+function merge(left, right, comparator) {
+	let result = [];
+	let l = 0,
+		r = 0;
+
+	if (typeof comparator !== "function") {
+		// defaulting comparator to sort values in ascending order
+		comparator = (a, b) => a - b;
+	}
+
+	while (l <= left.length && r < right.length) {
+		if (comparator(left[l], right[r]) <= 0) {
+			result.push(left[l]);
+			l++;
+		} else {
+			result.push(right[r])
+			r++;
+		}
+	}
+	// after we break out of the loop, if there are remaining elements in left, add them and return the result
+	return result.concat(left.slice(l)).concat(right.slice(r));
+}
+
+// Break up the array into halves until you can compare one value with another
+function mergeSort(arr, comparator) {
+	if (arr.length <= 1) {
+		return arr;
+	}
+	const mid = Math.floor(arr.length / 2);
+	const left = mergeSort(arr.slice(0, mid), comparator);
+	const right = mergeSort(arr.slice(mid), comparator);
+// Once you have smaller sorted arrays, merge those arrays with other sorted pairs until you are back at the full length of the array
+// Once the array has been merged back together, return the merged (and sorted!) array
+	return merge(left, right, comparator);
+}
+
+
+
+/*
+QUICK SORT
+https://www.youtube.com/watch?v=XE4VP_8Y0BU
+
+*/
+
+//Pick an element in the array and designate it as the "pivot"
+// Compare every other element in the array to the pivot
+// If it's less than the pivot value, move it to the left of the pivot.
+// If it's greater, move it to the right.
+// Once you have finished comparing, the pivot will be in the right place in the array.
+// Recursively call quicksort again with the left and right halves from the pivot until the array is sorted.
+
+/*
 Given an array of 1s and 0s which has all 1s first followed by all 0s, write a function called countZeroes, which returns the number of zeroes in the array. Expected runtime of O(log n)
 */
 
@@ -117,4 +179,33 @@ function findRotatedIndex(arr, n) {
 	return -1;
 }
 
-module.exports = { countZeroes, sortedFrequency, findRotatedIndex };
+// Binary Search
+
+/* 
+Modified Binary Search involves using binary search in various scenarios, such as finding a target ele)ment, the smallest or largest element satisfying a condition, etc.
+
+LeetCode Problems:
+1. Search in Rotated Sorted Array (Problem #33)
+2. Find Minimum in Rotated Sorted Array (Problem #153)
+3. Peak Index in a Mountain Array (Problem #852
+*/
+
+/*
+K-Way Merge
+
+K-way merge is an extension of the two-way merge process commonly used in merge sort. Here’s what it entails:
+In a k-way merge, instead of merging two sorted lists, you merge k sorted lists (or arrays) into a single sorted list.
+
+1. Use a min-heap (or priority queue) to keep track of the smallest elements from each of the k lists. The algorithm works by:
+2. Initializing the min-heap with the first element from each of the k lists.
+3. Repeatedly extract the minimum element from the heap and adding it to the result list.
+4. Insert the next element from the list that provided the minimum element into the heap.
+Time Complexity: The time complexity is O(nlogk), where 𝑛 is the total number of elements across all lists and 𝑘 is the number of lists being merged.
+
+LeetCode Problems:
+1. Merge k Sorted Lists (Problem #23)
+2. Kth Smallest Element in a Sorted Matrix (Problem #378)
+3. Merge Intervals (Problem #56)
+*/
+
+module.exports = { countZeroes, sortedFrequency, findRotatedIndex, mergeSort, merge};
