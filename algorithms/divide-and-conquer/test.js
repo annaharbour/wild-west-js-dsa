@@ -1,4 +1,11 @@
-const { countZeroes, sortedFrequency, findRotatedIndex, mergeSort, merge} = require("./index");
+const {
+	countZeroes,
+	sortedFrequency,
+	findRotatedIndex,
+	mergeSort,
+	merge,
+	quickSort,
+} = require("./index");
 
 describe("Mergesort", () => {
 	test("Merge is a function", () => {});
@@ -41,6 +48,31 @@ describe("Mergesort", () => {
 		expect(mergeSort([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5], comparator)).toEqual([
 			9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1,
 		]);
+	});
+});
+
+describe("QuickSort", () => {
+	test("quickSort is a function", () => {
+		expect(typeof quickSort).toEqual("function");
+	});
+
+	test("quickSort returns a sorted array", () => {
+		expect(quickSort([3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5])).toEqual([
+			1, 1, 2, 3, 3, 4, 5, 5, 5, 6, 9,
+		]);
+		expect(quickSort([5, 4, 3, 2, 1])).toEqual([1, 2, 3, 4, 5]);
+		expect(quickSort([])).toEqual([]);
+		expect(quickSort([1])).toEqual([1]);
+	});
+
+	test("quickSort uses comparator parameter instead of default ascending order", () => {
+		const comparator = (a, b) => b - a; // For descending order
+		const inputArray = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5];
+		const expectedOutput = [9, 6, 5, 5, 5, 4, 3, 3, 2, 1, 1];
+
+		expect(
+			quickSort(inputArray.slice(), 0, inputArray.length - 1, comparator)
+		).toEqual(expectedOutput);
 	});
 });
 

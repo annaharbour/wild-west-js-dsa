@@ -38,12 +38,12 @@ function merge(left, right, comparator) {
 		comparator = (a, b) => a - b;
 	}
 
-	while (l <= left.length && r < right.length) {
+	while (l < left.length && r < right.length) {
 		if (comparator(left[l], right[r]) <= 0) {
 			result.push(left[l]);
 			l++;
 		} else {
-			result.push(right[r])
+			result.push(right[r]);
 			r++;
 		}
 	}
@@ -59,25 +59,57 @@ function mergeSort(arr, comparator) {
 	const mid = Math.floor(arr.length / 2);
 	const left = mergeSort(arr.slice(0, mid), comparator);
 	const right = mergeSort(arr.slice(mid), comparator);
-// Once you have smaller sorted arrays, merge those arrays with other sorted pairs until you are back at the full length of the array
-// Once the array has been merged back together, return the merged (and sorted!) array
+	// Once you have smaller sorted arrays, merge those arrays with other sorted pairs until you are back at the full length of the array
+	// Once the array has been merged back together, return the merged (and sorted!) array
 	return merge(left, right, comparator);
 }
-
-
 
 /*
 QUICK SORT
 https://www.youtube.com/watch?v=XE4VP_8Y0BU
 
-*/
+// */
 
-//Pick an element in the array and designate it as the "pivot"
-// Compare every other element in the array to the pivot
-// If it's less than the pivot value, move it to the left of the pivot.
-// If it's greater, move it to the right.
-// Once you have finished comparing, the pivot will be in the right place in the array.
-// Recursively call quicksort again with the left and right halves from the pivot until the array is sorted.
+// Pick an element in the array and designate it as the "pivot". Choosing at random is the preferred approach because it does not have a pattern for which the worst case happens, as is true with using the first or last case. (The median element is ideal in terms of time complexity as we can find median in linear time and the partition function will always divide the input array into two halves, but it tends to be low on average as median finding has hihg constants.)
+
+function partition(arr, low, high, comparator) {
+	// Choose a random index within the range [low, high]
+	let pivotIndex = Math.floor(Math.random() * (high - low + 1)) + low;
+	let pivot = arr[pivotIndex];
+
+	// Swap pivot element to the end for convenience
+	[arr[pivotIndex], arr[high]] = [arr[high], arr[pivotIndex]];
+
+	let i = low; // Start with the first element
+
+	for (let j = low; j < high; j++) {
+		// Iterate through to high - 1
+		// Use the comparator to determine if the current element should be before the pivot
+		if (comparator(arr[j], pivot) < 0) {
+			// Swap elements
+			[arr[i], arr[j]] = [arr[j], arr[i]];
+			i++;
+		}
+	}
+	// Swap pivot to its correct position
+	[arr[i], arr[high]] = [arr[high], arr[i]];
+	return i; // Return the partition index
+}
+
+function quickSort(
+	arr,
+	low = 0,
+	high = arr.length - 1,
+	comparator = (a, b) => a - b
+) {
+	if (low < high) {
+		let part = partition(arr, low, high, comparator);
+		// Recursively sort elements before and after partition
+		quickSort(arr, low, part - 1, comparator);
+		quickSort(arr, part + 1, high, comparator);
+	}
+	return arr; // Return the sorted array
+}
 
 /*
 Given an array of 1s and 0s which has all 1s first followed by all 0s, write a function called countZeroes, which returns the number of zeroes in the array. Expected runtime of O(log n)
@@ -208,4 +240,11 @@ LeetCode Problems:
 3. Merge Intervals (Problem #56)
 */
 
-module.exports = { countZeroes, sortedFrequency, findRotatedIndex, mergeSort, merge};
+module.exports = {
+	countZeroes,
+	sortedFrequency,
+	findRotatedIndex,
+	mergeSort,
+	merge,
+	quickSort,
+};
