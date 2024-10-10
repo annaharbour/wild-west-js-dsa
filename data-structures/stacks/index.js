@@ -15,7 +15,6 @@ class StackList {
 	constructor() {
 		this.bottom = null;
 		this.top = null;
-		this.items = [];
 		this.length = 0;
 	}
 
