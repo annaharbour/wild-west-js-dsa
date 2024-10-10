@@ -39,4 +39,31 @@ class Queue {
 	}
 }
 
-module.exports = { Queue };
+// Problem: Implement a stack using two queues:
+
+class Stack {
+	constructor() {
+		this.q1 = [];
+		this.q2 = [];
+	}
+	push(val) {
+		// enque val to q2
+		this.q2.push(val);
+		// one by one deque everything from q1 and enqueue to q2
+		while (this.q1.length > 0) {
+			this.q2.push(this.q1[0]);
+			this.q1.shift();
+		}
+		// swap the queues of q1 and q2
+		let temp = this.q1;
+		this.q1 = this.q2;
+		this.q2 = temp;
+	}
+	pop() {
+		// dequeue item from q1
+		if (this.q1.length === 0) return null;
+		return this.q1.shift();
+	}
+}
+
+module.exports = { Queue, Stack };
