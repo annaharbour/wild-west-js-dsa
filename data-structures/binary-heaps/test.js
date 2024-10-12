@@ -1,16 +1,4 @@
-const { priorityQueue, MaxBinaryHeap } = require(".index");
-
-describe("Priority Queue", () => {
-	let pq;
-
-	beforeEach(() => {
-		pq = new priorityQueue();
-	});
-
-	test("", () => {
-		expect().toBe();
-	});
-});
+const { MaxBinaryHeap } = require(".index");
 
 describe("Max Binary Heap", () => {
 	let binaryHeap;

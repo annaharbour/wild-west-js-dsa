@@ -175,4 +175,4 @@ class PriorityQueue {
 	}
 }
 
-module.exports(MaxBinaryHeap, PriorityQueue);
+module.exports(MaxBinaryHeap);
